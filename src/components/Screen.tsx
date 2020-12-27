@@ -3,7 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import { IState } from '../types';
 import { useMachine } from '../hooks';
+import Avatar from '../components/Avatar';
 import Background from '../components/Background';
+import Dialog from '../components/Dialog';
 
 const Screen = <T extends string>({ state: state$ }: {
   state: IState<T>;
@@ -29,8 +31,8 @@ const Screen = <T extends string>({ state: state$ }: {
   return (
     <Background background={background$}>
       <div className={styles.viewport} onClick={handleClick} >
-        <img className="avatar" src={character$} alt="char" />
-        <div className="dialog" style={{color: `${dialogColor}`}}>{dialog$ || null}</div>
+        <Avatar character={character$} />
+        <Dialog dialog={dialog$} color={dialogColor} />
       </div>
     </Background>
   )
@@ -52,15 +54,6 @@ const useStyles = makeStyles({
       backgroundColor: 'rgba(0, 0, 0, 0.7)',
     }
   },
-  avatar: {
-    height: '40vh',
-    // -moz-user-select: none;
-    // -webkit-user-select: none;
-  },
-  dialog: {
-    fontSize: 'x-large',
-    padding: '32px',
-  }
 });
 
 export default Screen;
