@@ -1,5 +1,41 @@
 .App {
-  text-align: center;
+}
+
+.background {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.viewport {
+  border: 1px solid silver;
+  background-color: rgba(0, 0, 0, 0.66);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 80vw;
+  overflow: hidden;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+
+.viewport:hover {
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.avatar {
+  height: 40vh;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+
+.dialog {
+  font-size: x-large;
+  padding: 32px;
 }
 
 .App-logo {
