@@ -1,90 +1,48 @@
 import { Machine } from 'xstate';
+import scene01 from './scene_01';
+import scene02 from './scene_02';
+import scene02Alternate from './scene_02_alternate';
 
-import Colors from '../../components/Colors';
-import { Pooz, Mallen } from '../../characters'
+import { addOne } from './redux';
+import store from '../../store';
 
-export const machine = Machine({
-  id: 'intro',
-  initial: 'init',
+function isComplete(id: string) {
+  const completed = store.getState().chapter01.ids;
+  return completed.includes(id);
+}
+
+const machine = Machine({
+  id: 'chapter1',
+  initial: 'unknown',
   states: {
-    init: {
-      meta: {
-        background: (count: number) => count === 2 ? 'happy' : 'fun',
-        dialog: (count: number) => ([
-          "Hey there, I didn't see you come in.",
-          "I should put my dick away.",
-          "My name is Pooz, and I need your assistance"
-        ][count]),
-        dialogColor: [Colors.lightPurple],
-        characters: () => Pooz.default,
-        maxCount: 2,
-      },
+    unknown: {
       on: {
-        NEXT: 'dragon',
+        '': [
+          { target: 'scene01', cond: () => !isComplete('scene01')},
+          { target: 'scene02', cond: () => !isComplete('scene02')},
+        ]
       },
     },
-    dragon: {
-      meta: {
-        background: () => 'sad',
-        dialog: (count: number) => ([
-          "Please don't make me assist.",
-          "I'm just trying to finish Scott's game, please."
-        ][count]),
-        dialogColor: [Colors.lightPurple],
-        characters: () => Mallen.default,
-        maxCount: 1,
-      },
-      on: {
-        NEXT: 'veryWell',
-      },
-    },
-    veryWell: {
-      meta: {
-        background: (count: number) => (count === 1 || count === 2) ? 'happy' : 'fun',
-        dialog: (count: number) => ([
-          "Very well.",
-          "I have a much better plan for you.",
-          "Repeat after me:",
-          "Dejuiui."
-        ][count]),
-        dialogColor: [Colors.lightPurple],
-        characters: () => Pooz.default,
-        maxCount: 3,
-      },
-      on: {
-        NEXT: 'no',
-      },
-    },
-    no: {
-      meta: {
-        background: (count: number) => {
-          if(count === 2){
-            return 'moody'
-          } else if (count === 1) {
-            return 'default';
-          } else  {
-            return 'sad'
+    scene01: {
+      on: { 
+        YES: {
+          target: 'scene02',
+          actions: () => {
+            store.dispatch(addOne('scene01'));
           }
         },
-        dialog: (count: number) => ([
-          "NOOOO.",
-          "NOOOOOOOOOOOO....",
-          "NOOOOOOOOOOOOOOOOOOOOO!!!",
-          "Dejuiui."
-        ][count]),
-        dialogColor: [Colors.lightPurple],
-        characters: (count: number) => {
-          if(count === 3){
-            return Mallen.happy;
-          } else {
-            return Mallen.default;
+        NO: {
+          target: 'scene02Alternate',
+          actions: () => {
+            store.dispatch(addOne('scene01'));
           }
-        },
-        maxCount: 3,
-      },
-      on: {
-        NEXT: 'init',
-      },
-    }
+        },        
+      }, 
+      ...scene01
+    },
+    scene02: scene02,
+    scene02Alternate: scene02Alternate,
   },
 });
+
+export default machine;

@@ -1,6 +1,6 @@
 import { IMoods } from './types';
 
-type Character = {
+export type Character = {
   [key in IMoods]: string;
 }
 

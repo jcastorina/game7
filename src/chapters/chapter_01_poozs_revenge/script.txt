@@ -1,0 +1,59 @@
+#INIT
+
+BG=FUN
+
+$POOZ
+> Hey there, I didn't see you come in.
+> I should put my dick away.
+
+BG=HAPPY
+
+$POOZ
+> My name is Pooz, and I need your assistance
+
+BG=SAD
+
+$MALLEN
+> Please don't make me assist.
+> I'm just trying to finish Scott's game, please.
+
+BG=FUN
+
+$POOZ
+> Very well.
+
+BG=HAPPY
+
+$POOZ
+> I have a much better plan for you.
+> Repeat after me:
+
+BG=FUN
+
+$POOZ
+Dejuiui.
+
+BG=SAD
+
+$MALLEN
+> NOOOO.
+> NOOOOOOOOOOOO....
+> NOOOOOOOOOOOOOOOOOOOOO!!!
+
+$MALLEN
+> Do as Pooz says?
+? Yes:@YES|No:@NO
+
+#YES
+
+$MALLEN[HAPPY]
+> Dejuiui.
+
+@INIT
+
+#NO
+
+$MALLEN
+> I refuse.
+
+@INIT
