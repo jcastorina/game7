@@ -1,5 +1,6 @@
 import { useMachine } from '@xstate/react';
 import Background from '../components/Background';
+// import {Dejuiui} from "../features/"
 
 const Screen = ({ machine }: { machine: any }) => {
   
@@ -14,6 +15,7 @@ const Screen = ({ machine }: { machine: any }) => {
   }
   const { dialog } = meta[key](send);
   return (
+    
     // @ts-ignore
     <Background background={context.background}>
       {dialog}
