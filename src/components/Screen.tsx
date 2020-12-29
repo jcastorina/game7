@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useMachine } from '@xstate/react';
 import Background from '../components/Background';
-import Dialog from '../components/Dialog';
+//import Dialog from '../components/Dialog';
+import {Dejuiui} from "../features/"
+
 
 const Screen = ({ machine }: { machine: any }) => {
   
@@ -22,9 +24,11 @@ const Screen = ({ machine }: { machine: any }) => {
 
   return (
     <Background background={background(count)}>
-      <Dialog onClick={handleClick} character={characters(count)} dialog={dialog(count)} color={dialogColor} />
+      <Dejuiui />
     </Background>
   )
 }
 
 export default Screen;
+
+// <Dialog onClick={handleClick} character={characters(count)} dialog={dialog(count)} color={dialogColor} />
