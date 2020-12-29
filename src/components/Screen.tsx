@@ -1,34 +1,26 @@
-import { useState } from "react";
 import { useMachine } from '@xstate/react';
 import Background from '../components/Background';
-//import Dialog from '../components/Dialog';
-import {Dejuiui} from "../features/"
-
+// import {Dejuiui} from "../features/"
 
 const Screen = ({ machine }: { machine: any }) => {
   
-  const [count, setCount] = useState<number>(0);
   const [state, send] = useMachine(machine);
-  const { meta } = state;
+  const { meta, context } = state;
   
-  const key = `${machine.id}.${state.value}`;
-  const { dialogColor, maxCount, background, dialog, characters } = meta[key];
+  const key = `${machine.id}.${Object.keys(state.value)[0]}.${Object.values(state.value)[0]}`;
 
-  const handleClick = () => {
-    setCount(c => c + 1);
-    if(count === maxCount){
-      setCount(0);
-      send({type: 'NEXT'});
-    }
+  console.log(context, state);
+  if (!meta[key]) {
+    return null;
   }
-
+  const { dialog } = meta[key](send);
   return (
-    <Background background={background(count)}>
-      <Dejuiui />
+    
+    // @ts-ignore
+    <Background background={context.background}>
+      {dialog}
     </Background>
   )
 }
 
 export default Screen;
-
-// <Dialog onClick={handleClick} character={characters(count)} dialog={dialog(count)} color={dialogColor} />

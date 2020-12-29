@@ -1,18 +1,44 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 
-type Props = {
-  character: string;
-  dialog: string;
-  color: string[];
-  onClick: () => void;
+import Button from '../components/Button';
+
+type Choice = {
+  text: string;
+  action: () => void;
 }
-const Dialog: FC<Props> = ({dialog, character, color, onClick}) => {
+
+type Props = {
+  avatar?: string;
+  text: string[];
+  color: string[];
+  onDone?: () => void;
+  choices?: Choice[]
+}
+const Dialog: FC<Props> = ({text, avatar, color, onDone, choices }) => {
   const styles = useStyles();
+  const [count, setCount] = useState(0);
+  const isLast = count === text.length - 1;
+
+  const handleClick = () => {
+    if (isLast && onDone) {
+      setCount(0);
+      onDone();
+    } else if (!isLast) {
+      setCount((x) => x + 1);
+    }
+  }
+
   return (
-    <div className={styles.viewport} onClick={onClick} >
-      <img className={styles.avatar} src={character} alt="char" />
-      <div className={styles.text} style={{color: `${color}`}}>{dialog}</div>
+    <div className={styles.viewport} onClick={handleClick} >
+      {Boolean(avatar) && (<img className={styles.avatar} src={avatar} alt="char" />)}
+      <div className={styles.text} style={{color: `${color}`}}>{text[count]}</div>
+      {isLast && (
+        <div className={styles.buttons}>{choices?.map(x => {
+          return <Button key={x.text} className={styles.button} title={x.text} onClick={() => { setCount(0); x.action(); }} />
+        })}
+        </div>
+      )}
     </div>
   )
 }
@@ -42,6 +68,13 @@ const useStyles = makeStyles({
     fontSize: 'x-large',
     padding: '32px',
   },
+  buttons: {
+    display: 'flex',
+    marginBottom: '32px',
+  },
+  button: {
+    margin: 10,
+  }
 });
 
 export default Dialog;
